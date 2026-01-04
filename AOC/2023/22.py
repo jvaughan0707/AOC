@@ -5,14 +5,16 @@ lines = getInput(22)
 bricks = []
 
 baseGrid = {}
-# names = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+names = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
 class Brick:
     def __init__(self, start, end):
         self.supportingBricks = []
+        self.supportedBricks = []
         self.start = tuple(map(int, start.split(',')))
         self.end =  tuple(map(int, end.split(',')))
         # self.name = names[len(bricks)]
+        self.name = str(len(bricks))
 
         if self.start[0] != self.end[0]:
             self.orientation = 0
@@ -24,7 +26,6 @@ class Brick:
         self.baseHeight = min(self.start[2], self.end[2])
         self.topHeight = max(self.start[2], self.end[2])
 
-        self.locked = False
         self.length = self.end[self.orientation] + 1 - self.start[self.orientation]
 
         if self.length <= 0:
@@ -33,13 +34,8 @@ class Brick:
 
         self.overlappingProjections = set()
 
-        self.cubes = []
         cube = self.start
         for i in range(self.length):
-            self.cubes.append(cube)
-            cube = add(cube, self.direction)
-
-        for cube in self.cubes:
             projection = (cube[0], cube[1])
             if projection not in baseGrid:
                 baseGrid[projection] = []
@@ -53,9 +49,11 @@ class Brick:
 
             if self.orientation == 2:
                 break
+            cube = add(cube, self.direction)
 
     def __repr__(self):
-        return str(self.start) + '-' + str(self.end)
+        # return str(self.start) + '-' + str(self.end)
+        return self.name
 
 for line in lines:
     brick = Brick(*line.split('~'))
@@ -67,40 +65,45 @@ supportingBricks = set()
 for brick in bricks:
     newHeight = 1
     if brick.overlappingProjections:
-        if any(not x.locked for x in brick.overlappingProjections):
-            print('not locked')
         maxHeight = max(brick.overlappingProjections, key=lambda b: b.topHeight).topHeight
         brick.supportingBricks.extend(filter(lambda p : p.topHeight == maxHeight, brick.overlappingProjections))
+
+        for s in brick.supportingBricks:
+            s.supportedBricks.append(brick)
         newHeight = maxHeight + 1
 
     heightDiff = brick.baseHeight - newHeight
     brick.baseHeight = newHeight
     brick.topHeight -= heightDiff
-    newCubes = []
-    for cube in brick.cubes:
-        newCubes.append((cube[0], cube[1], cube[2] - heightDiff))
-    brick.cubes = newCubes
+
     if len(brick.supportingBricks) == 1:
         supportingBricks.add(brick.supportingBricks[0])
 
-    brick.locked = True
-
-print(len(supportingBricks))
-print(len(bricks))
 print(len(bricks) - len(supportingBricks))
 
-# > 384
+def getSupportedCount(baseBrick):
+    removedBricks = [baseBrick]
+    newRemovedBricks = [baseBrick]
+    while True:
+        bricksToCheck = newRemovedBricks.copy()
+        newRemovedBricks = []
+        for b in bricksToCheck:
+            for s in b.supportedBricks:
+                if s in removedBricks or s in newRemovedBricks:
+                    continue
+                if all(x in removedBricks for x in s.supportingBricks):
+                    newRemovedBricks.append(s)
 
-allCubes = set()
+        if not newRemovedBricks:
+            break
 
-for brick in bricks:
-    for cube in brick.cubes:
-        if cube in allCubes:
-            print('duplicate cube:', cube)
+        removedBricks.extend(newRemovedBricks)
 
-        allCubes.add(cube)
+    return len(removedBricks) - 1
 
-print(len(allCubes))
+total = 0
+for brick in supportingBricks:
+    total += getSupportedCount(brick)
 
-# for brick in bricks:
-#     print(brick.name, brick.cubes)
+print(total)
+
