@@ -120,7 +120,7 @@ for module in modules.values():
 
 # print(adjMap)
 
-# visualiseGraph(adjMap, True, lambda x: 'red' if x[0] == '&' else 'blue' if x[0] == '%' else 'green')
+# visualiseGraph(adjMap, directed = True, colorMap=lambda x: 'red' if x[0] == '&' else 'blue' if x[0] == '%' else 'green')
 
 periodMap = {
     x: y[-1][0] - y[0][0] for x, y in endNodes.items()
