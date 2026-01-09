@@ -148,6 +148,12 @@ def getGridInput(day):
 
     return grid
 
+def getSectionsInput(day):
+    with open(f'inputs/{day}') as f:
+        sections = f.read().split('\n\n')
+
+        for section in sections:
+            yield section.split('\n')
 
 def getFirstInGrid(grid, char):
     width = len(grid[0])
