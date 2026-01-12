@@ -1,5 +1,7 @@
 from copy import deepcopy
 
+def normalise(x):
+    return 1 if x > 0 else 0 if x == 0 else -1
 
 def expandWithPlaceholders(values, expandFunc, iterations, sizeFunc=None):
     expansionMap = {}
@@ -78,7 +80,6 @@ def expandWithPlaceholders(values, expandFunc, iterations, sizeFunc=None):
 
     return recurse(items)
 
-
 def flipGrid(grid):
     newRows = []
 
@@ -95,32 +96,25 @@ def flipGrid(grid):
             newRows.append(newRow)
     return newRows
 
-
 def sub(p1, p2):
     return tuple(p1[i] - p2[i] for i in range(len(p1)))
-
 
 def add(p1, p2):
     return tuple(p1[i] + p2[i] for i in range(len(p1)))
 
-
 def scale(p, s):
     return tuple(p[i] * s for i in range(len(p)))
-
 
 def dot(p1, p2):
     return p1[0] * p2[0] + p1[1] * p2[1]
 
-
 def isOob(grid, p):
     return not (0 <= p[0] < len(grid) and 0 <= p[1] < len(grid[0]))
-
 
 def get(grid, p):
     if isOob(grid, p):
         return None
     return grid[p[0]][p[1]]
-
 
 up = (-1, 0)
 down = (1, 0)
@@ -132,7 +126,6 @@ directions = {
     'l': left,
     'r': right
 }
-
 
 def getInput(day):
     with open(f'inputs/{day}') as f:
@@ -165,8 +158,13 @@ def getFirstInGrid(grid, char):
                 return i, j
 
 
-def getMinDist(adjacencyMatrix, start, end):
-    distMap = {x: float('inf') for x in adjacencyMatrix}
+def getMinDist(adjacencyMatrix, start, end, weighted=True, distMap = None):
+    if distMap is None:
+        distMap = {x: float('inf') for x in adjacencyMatrix}
+    else:
+        for x in adjacencyMatrix:
+            distMap[x] = float('inf')
+
     exploredNodes = set()
     explorableNodes = {start}
     distMap[start] = 0
@@ -181,7 +179,8 @@ def getMinDist(adjacencyMatrix, start, end):
         exploredNodes.add(minUnexploredNode)
 
         neighbours = adjacencyMatrix[minUnexploredNode]
-        for neighbour, nDist in neighbours.items():
+        for neighbour in neighbours:
+            nDist = neighbours[neighbour] if weighted else 1
             if neighbour in exploredNodes:
                 continue
 
@@ -192,7 +191,6 @@ def getMinDist(adjacencyMatrix, start, end):
 
     # print(distMap)
     return distMap[end]
-
 
 def visualiseGraph(adjacencyMatrix, directed=False, weighted=False, colorMap=None, name='graph'):
     from pyvis.network import Network
@@ -219,7 +217,6 @@ def visualiseGraph(adjacencyMatrix, directed=False, weighted=False, colorMap=Non
     net.show(name, notebook=False)
     webbrowser.open('file://' + os.path.realpath(name))
 
-
 def getNetwork(grid, adjFunc=None, wallSymbol='#'):
     nodes = {}
     width = len(grid[0])
@@ -235,10 +232,9 @@ def getNetwork(grid, adjFunc=None, wallSymbol='#'):
                 neighbourSymbol = get(grid, neighbourPoint)
                 if not neighbourSymbol or neighbourSymbol == wallSymbol:
                     continue
-                if not adjFunc or adjFunc(current, neighbourPoint, direction):
+                if not adjFunc or adjFunc(current, neighbourSymbol, direction):
                     nodes[(i, j)].append(neighbourPoint)
     return nodes
-
 
 def getPathDfs(adjMap, start, end, currentPath=None):
     if currentPath is None:
@@ -345,3 +341,4 @@ def getGlobalMinCuts(adjMap, upperLimit):
                 return minCuts
 
     return None
+
