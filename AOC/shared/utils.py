@@ -342,3 +342,10 @@ def getGlobalMinCuts(adjMap, upperLimit):
 
     return None
 
+def getNumbers(text):
+    import re
+    m = re.findall(r'-?\d+', text)
+
+    return list(map(int, m))
+
+
