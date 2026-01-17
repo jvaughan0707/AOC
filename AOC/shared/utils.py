@@ -122,9 +122,9 @@ left = (0, -1)
 right = (0, 1)
 directions = {
     'u': up,
+    'r': right,
     'd': down,
     'l': left,
-    'r': right
 }
 
 def getInput(day):
@@ -145,8 +145,7 @@ def getSectionsInput(day):
     with open(f'inputs/{day}') as f:
         sections = f.read().split('\n\n')
 
-        for section in sections:
-            yield section.split('\n')
+        return list(map(lambda x: x.split('\n'), sections))
 
 def getFirstInGrid(grid, char):
     width = len(grid[0])
