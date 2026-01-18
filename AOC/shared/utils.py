@@ -127,6 +127,20 @@ directions = {
     'l': left,
 }
 
+compassDirections = {
+    'N': up,
+    'E': right,
+    'S': down,
+    'W': left,
+}
+
+arrowDirections = {
+    '^': up,
+    '>': right,
+    '<': left,
+    'v': down,
+}
+
 def getInput(day):
     with open(f'inputs/{day}') as f:
         return f.read().splitlines()
@@ -189,6 +203,34 @@ def getMinDist(adjacencyMatrix, start, end, weighted=True, distMap = None):
             explorableNodes.add(neighbour)
 
     # print(distMap)
+    return distMap[end]
+
+def getMinDistDynamic(adjacencyMatrix, start, end, weightFunc):
+    distMap = {x: float('inf') for x in adjacencyMatrix}
+
+    exploredNodes = set()
+    explorableNodes = {start}
+    distMap[start] = 0
+
+    while True:
+        minUnexploredNode = min(explorableNodes, key=distMap.get)
+
+        if minUnexploredNode == end:
+            break
+        dist = distMap[minUnexploredNode]
+        explorableNodes.remove(minUnexploredNode)
+        exploredNodes.add(minUnexploredNode)
+
+        neighbours = adjacencyMatrix[minUnexploredNode]
+        for neighbour in neighbours:
+            if neighbour in exploredNodes:
+                continue
+            nDist = weightFunc(minUnexploredNode, neighbour, dist)
+            distMap[neighbour] = min(dist + nDist, distMap[neighbour])
+            explorableNodes.add(neighbour)
+            print(distMap)
+
+    print(distMap)
     return distMap[end]
 
 def visualiseGraph(adjacencyMatrix, directed=False, weighted=False, colorMap=None, name='graph'):
