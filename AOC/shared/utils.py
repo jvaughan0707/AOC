@@ -388,5 +388,3 @@ def getNumbers(text):
     m = re.findall(r'-?\d+', text)
 
     return list(map(int, m))
-
-
