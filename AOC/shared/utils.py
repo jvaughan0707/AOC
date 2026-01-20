@@ -3,10 +3,16 @@ from copy import deepcopy
 def normalise(x):
     return 1 if x > 0 else 0 if x == 0 else -1
 
-def expandWithPlaceholders(values, expandFunc, iterations, sizeFunc=None):
+def expandWithPlaceholders(values, expandFunc, iterations, sizeFunc=None, addSizeFunc=None):
     expansionMap = {}
+
+    # for a given item, what is the "size"? Size doesn't have to be int, but in this case custom add func must be specified
     if sizeFunc is None:
         sizeFunc = lambda x: len(x)
+
+    # for a current total "size" and a new item's "size", return the result of combining them
+    if addSizeFunc is None:
+        addSizeFunc = lambda current, new: current + new
 
     class Item:
         def __init__(self, value, parent=None):
@@ -23,7 +29,7 @@ def expandWithPlaceholders(values, expandFunc, iterations, sizeFunc=None):
                 parent = current.parent
                 if len(expansionMap[parent.value]) < depth + 1:
                     expansionMap[parent.value].append(0)
-                expansionMap[parent.value][depth] += self.getSize()
+                expansionMap[parent.value][depth] = addSizeFunc(expansionMap[parent.value][depth], self.getSize())
                 depth += 1
                 current = parent
 
@@ -63,12 +69,12 @@ def expandWithPlaceholders(values, expandFunc, iterations, sizeFunc=None):
                 expandedLength = 0
                 for v in expanded:
                     newItems.append(Item(v, item))
-                    expandedLength += sizeFunc(v)
+                    expandedLength = addSizeFunc(expandedLength, sizeFunc(v))
                 expansionMap[item.value] = [sizeFunc(item.value), expandedLength]
 
         for item in newItems:
             item.updateParents()
-            totalLength += item.getSize()
+            totalLength = addSizeFunc(totalLength, item.getSize())
 
         # print('newItems:', newItems, 'length:', totalLength, 'map:', expansionMap)
 
@@ -154,6 +160,11 @@ def getGridInput(day):
         grid.append(list(line))
 
     return grid
+
+def getNumbersGridInput(day):
+    grid = getGridInput(day)
+
+    return [list(map(int, row)) for row in grid]
 
 def getSectionsInput(day):
     with open(f'inputs/{day}') as f:
@@ -388,3 +399,68 @@ def getNumbers(text):
     m = re.findall(r'-?\d+', text)
 
     return list(map(int, m))
+
+class Point:
+    def __init__(self, position, value):
+        self.position = position
+        self.value = value
+        self.neighbours = {}
+
+    def addNeighbour(self, neighbour, direction):
+        self.neighbours[direction] = neighbour
+
+    def __repr__(self):
+        return str(self.position)
+
+def getGridPoints(grid, diagonal = False):
+    points = {}
+    height = len(grid)
+    width = len(grid[0])
+    for i in range(height):
+        for j in range(width):
+            value = grid[i][j]
+            points[(i,j)] = Point((i, j), value)
+
+    for i in range(height):
+        for j in range(width):
+            p1 = points[(i,j)]
+            for d in directions:
+                p2 = add((i, j), directions[d])
+                if not isOob(grid, p2):
+                    p1.addNeighbour(points[p2], d)
+
+            if diagonal:
+                for d in directions:
+                    i2, j2 = directions[d]
+                    i2, j2 = i2 + j2, j2 - i2
+                    p2 = add((i, j), (i2, j2))
+                    if not isOob(grid, p2):
+                        p1.addNeighbour(points[p2], d + '+')
+
+    return points
+
+def formatText(text, colour = '', style = ''):
+    colourMap = {
+        'pink': '\033[95m' ,
+        'blue': '\033[94m',
+        'cyan': '\033[96m',
+        'green': '\033[92m',
+        'orange': '\033[93m',
+        'red': '\033[91m'
+    }
+
+    styleMap = {
+        'b': '\033[1m',
+        'u': '\033[4m'
+    }
+
+    endSequence = '\033[0m'
+    output = text
+    if colour:
+        output = colourMap[colour] + output + endSequence
+
+    if style:
+        output = styleMap[style] + output + endSequence
+
+    return output
+
