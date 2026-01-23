@@ -4,9 +4,13 @@ def normalise(x):
     return 1 if x > 0 else 0 if x == 0 else -1
 
 def expandWithPlaceholders(values, expandFunc, iterations, sizeFunc=None, addSizeFunc=None):
+    # dictionary with keys which are possible item values. Dictionary values are arrays of sizes at increasing depths
+    # First element in the array is the size of the item with no expansions, second is size after 1 expansion...
     expansionMap = {}
 
-    # for a given item, what is the "size"? Size doesn't have to be int, but in this case custom add func must be specified
+    # for a given item, what is the "size"?
+    # Defaults to the length of the item, but other common use cases are returning 1 for all items when we only care about the count,
+    # or returning something else entirely (e.g. frequency map)
     if sizeFunc is None:
         sizeFunc = lambda x: len(x)
 
@@ -67,9 +71,9 @@ def expandWithPlaceholders(values, expandFunc, iterations, sizeFunc=None, addSiz
             else:
                 expanded = expandFunc(item.value)
                 expandedLength = 0
-                for v in expanded:
-                    newItems.append(Item(v, item))
-                    expandedLength = addSizeFunc(expandedLength, sizeFunc(v))
+                for newItem in expanded:
+                    newItems.append(Item(newItem, item))
+                    expandedLength = addSizeFunc(expandedLength, sizeFunc(newItem))
                 expansionMap[item.value] = [sizeFunc(item.value), expandedLength]
 
         for item in newItems:
@@ -112,7 +116,7 @@ def scale(p, s):
     return tuple(p[i] * s for i in range(len(p)))
 
 def dot(p1, p2):
-    return p1[0] * p2[0] + p1[1] * p2[1]
+    return sum(p1[i] * p2[i] for i in range(len(p1)))
 
 def isOob(grid, p):
     return not (0 <= p[0] < len(grid) and 0 <= p[1] < len(grid[0]))
@@ -121,6 +125,9 @@ def get(grid, p):
     if isOob(grid, p):
         return None
     return grid[p[0]][p[1]]
+
+def isCollinear(p1, p2):
+    return p1[1]*p2[2] == p1[2]*p2[1] and p1[0]*p2[2] == p1[2]*p2[0] and p1[0]*p2[1] == p1[1]*p2[0]
 
 up = (-1, 0)
 down = (1, 0)
