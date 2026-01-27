@@ -471,3 +471,39 @@ def formatText(text, colour = '', style = ''):
 
     return output
 
+def triangle(n):
+    return n * (n + 1) // 2
+
+def condense(coordValues, includeMiddles = True):
+    dimensions = len(coordValues)
+
+    coordMap = [
+        {} for i in range(dimensions)
+    ]
+
+    widthMap = [
+        {} for i in range(dimensions)
+    ]
+
+    for values in coordValues:
+        values.sort()
+
+    for d in range(dimensions):
+        m = widthMap[d]
+
+        current = 0
+
+        for i, v in enumerate(coordValues[d]):
+            coordMap[d][v] = current
+            m[current] = 1
+
+            current += 1
+            if includeMiddles:
+
+                if i > 0 and coordValues[d][i - 1] < v - 1:
+                    m[current] =  v - coordValues[d][i - 1] - 1
+                    current += 1
+            elif i > 0:
+                m[current] = v - coordValues[d][i - 1]
+
+    return coordMap, widthMap
