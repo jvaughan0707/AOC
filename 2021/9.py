@@ -1,4 +1,4 @@
-from AOC.shared.utils import getNumbersGridInput, getGridPoints, formatText
+from shared.utils import getNumbersGridInput, getGridPoints, formatText
 
 grid = getNumbersGridInput(9)
 

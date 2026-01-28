@@ -1,4 +1,4 @@
-from AOC.shared.utils import getSectionsInput, expandWithPlaceholders
+from shared.utils import getSectionsInput, expandWithPlaceholders
 
 [template], rulesList = getSectionsInput(14)
 

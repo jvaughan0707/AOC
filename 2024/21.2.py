@@ -1,4 +1,4 @@
-from AOC.shared.utils import expandWithPlaceholders
+from shared.utils import expandWithPlaceholders
 
 rawInput = '''638A
 965A

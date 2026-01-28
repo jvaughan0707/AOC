@@ -1,4 +1,4 @@
-from AOC.shared.utils import getInput, getMinDist, visualiseGraph
+from shared.utils import getInput, getMinDist, visualiseGraph
 import re
 lines = getInput(16)
 

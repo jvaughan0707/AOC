@@ -1,4 +1,4 @@
-from AOC.shared.utils import getInput, directions, up, down, left, right, isOob, add, scale
+from shared.utils import getInput, directions, up, down, left, right, isOob, add, scale
 import sys
 sys.setrecursionlimit(150000)
 

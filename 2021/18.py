@@ -1,7 +1,7 @@
 import json
 from copy import deepcopy
 
-from AOC.shared.utils import getInput
+from shared.utils import getInput
 
 inputLines = getInput(18)
 

@@ -1,4 +1,4 @@
-from AOC.shared.utils import getInput, getNumbers, condense
+from shared.utils import getInput, getNumbers, condense
 
 lines = getInput(22)
 

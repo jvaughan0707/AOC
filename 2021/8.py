@@ -1,6 +1,6 @@
 from numpy.ma.extras import dstack
 
-from AOC.shared.utils import getInput
+from shared.utils import getInput
 
 lines = getInput(8)
 

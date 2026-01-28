@@ -1,4 +1,4 @@
-from AOC.shared.utils import getInput, directions, isOob, add, dot, getMinDist
+from shared.utils import getInput, directions, isOob, add, dot, getMinDist
 
 lines = getInput(17)
 minStraight = 4 # set to 1 for part 1

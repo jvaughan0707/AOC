@@ -1,4 +1,4 @@
-from AOC.shared.utils import getSectionsInput, getNumbers
+from shared.utils import getSectionsInput, getNumbers
 
 coordsList, foldLines = getSectionsInput(13)
 

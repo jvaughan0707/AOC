@@ -1,4 +1,4 @@
-from AOC.shared.utils import getSectionsInput, normalise
+from shared.utils import getSectionsInput, normalise
 import json
 
 pairs = getSectionsInput(13)

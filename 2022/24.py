@@ -1,6 +1,6 @@
 import math
 
-from AOC.shared.utils import getGridInput, arrowDirections, add, getNetwork, getMinDistDynamic
+from shared.utils import getGridInput, arrowDirections, add, getNetwork, getMinDistDynamic
 
 grid = getGridInput(24)
 

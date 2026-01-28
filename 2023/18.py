@@ -1,4 +1,4 @@
-from AOC.shared.utils import getInput, directions, add, scale
+from shared.utils import getInput, directions, add, scale
 import sys
 sys.setrecursionlimit(150000)
 lines = getInput(18)

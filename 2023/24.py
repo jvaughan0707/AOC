@@ -1,5 +1,5 @@
 from fractions import Fraction
-from AOC.shared.utils import getInput, sub, add, scale
+from shared.utils import getInput, sub, add, scale
 
 inputs = getInput(24)
 inf = float('inf')

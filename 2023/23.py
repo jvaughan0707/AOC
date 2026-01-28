@@ -1,4 +1,4 @@
-from AOC.shared.utils import getGridInput, getNetwork, visualiseGraph
+from shared.utils import getGridInput, getNetwork, visualiseGraph
 
 grid = getGridInput(23)
 

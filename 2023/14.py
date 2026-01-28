@@ -1,4 +1,4 @@
-from AOC.shared.utils import add, isOob, get
+from shared.utils import add, isOob, get
 
 rawInput = '''
 O..#OO..#...O..O#O.O...O##.O#..#O#...O.O.....O..........O..#...#.....O.O.O.O#..O........O...........

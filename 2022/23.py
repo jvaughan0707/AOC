@@ -1,4 +1,4 @@
-from AOC.shared.utils import getInput, up as N, down as S, left as W, right as E, add
+from shared.utils import getInput, up as N, down as S, left as W, right as E, add
 
 lines = getInput(23)
 

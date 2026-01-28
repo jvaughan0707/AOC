@@ -1,4 +1,4 @@
-from AOC.shared.utils import getSectionsInput
+from shared.utils import getSectionsInput
 
 cratesInput, instructionsInput = getSectionsInput(5)
 

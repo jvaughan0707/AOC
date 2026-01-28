@@ -1,6 +1,6 @@
 import math
 
-from AOC.shared.utils import getInput
+from shared.utils import getInput
 
 positions = getInput(7)[0]
 

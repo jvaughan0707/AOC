@@ -1,5 +1,5 @@
 import math
-from AOC.shared.utils import getInput, getNumbers
+from shared.utils import getInput, getNumbers
 
 targetInput = getInput(17)[0]
 

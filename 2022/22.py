@@ -1,4 +1,4 @@
-from AOC.shared.utils import getSectionsInput, getNumbers, add, up, down, left, right, scale
+from shared.utils import getSectionsInput, getNumbers, add, up, down, left, right, scale
 import re
 import math
 

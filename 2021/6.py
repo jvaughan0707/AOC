@@ -1,4 +1,4 @@
-from AOC.shared.utils import getInput,expandWithPlaceholders
+from shared.utils import getInput,expandWithPlaceholders
 
 line = getInput(6)[0]
 

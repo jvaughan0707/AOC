@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from AOC.shared.utils import getGridInput, getFirstInGrid, directions, isOob, get, add
+from shared.utils import getGridInput, getFirstInGrid, directions, isOob, get, add
 
 og = getGridInput(21)
 width = len(og[0])

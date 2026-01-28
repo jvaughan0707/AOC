@@ -1,4 +1,4 @@
-from AOC.shared.utils import getSectionsInput
+from shared.utils import getSectionsInput
 
 sections = getSectionsInput(20)
 

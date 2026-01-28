@@ -1,4 +1,4 @@
-from AOC.shared.utils import getInput, add, sub
+from shared.utils import getInput, add, sub
 
 lines = getInput(18)
 

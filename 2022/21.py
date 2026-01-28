@@ -1,5 +1,5 @@
 import re
-from AOC.shared.utils import getInput, visualiseGraph
+from shared.utils import getInput, visualiseGraph
 
 lines = getInput(21)
 monkeys = {}

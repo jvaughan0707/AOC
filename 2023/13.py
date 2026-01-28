@@ -1,4 +1,4 @@
-from AOC.shared.utils import flipGrid
+from shared.utils import flipGrid
 
 rawInput = '''
 #.#........

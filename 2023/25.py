@@ -1,4 +1,4 @@
-from AOC.shared.utils import getInput, getGlobalMinCuts, getConnectedPoints
+from shared.utils import getInput, getGlobalMinCuts, getConnectedPoints
 import sys
 sys.setrecursionlimit(150000)
 

@@ -1,4 +1,4 @@
-from AOC.shared.utils import getInput, up, down, left, right, add
+from shared.utils import getInput, up, down, left, right, add
 
 directions = getInput(17)[0]
 

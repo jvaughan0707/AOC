@@ -1,4 +1,4 @@
-from AOC.shared.utils import getGridInput, getNetwork, getFirstInGrid, getMinDist, get
+from shared.utils import getGridInput, getNetwork, getFirstInGrid, getMinDist, get
 
 grid = getGridInput(12)
 

@@ -1,4 +1,4 @@
-from AOC.shared.utils import getSectionsInput, getNumbers, sub, add, scale, isCollinear
+from shared.utils import getSectionsInput, getNumbers, sub, add, scale, isCollinear
 
 sections = getSectionsInput(19)
 
