@@ -276,20 +276,19 @@ def visualiseGraph(adjacencyMatrix, directed=False, weighted=False, colorMap=Non
     net.show(name, notebook=False)
     webbrowser.open('file://' + os.path.realpath(name))
 
-def getNetwork(grid, adjFunc=None, wallSymbol='#'):
+def getNetwork(grid, adjFunc=None, wallSymbols='#'):
     nodes = {}
-    width = len(grid[0])
     height = len(grid)
     for i in range(height):
-        for j in range(width):
+        for j in range(len(grid[i])):
             current = grid[i][j]
-            if current == wallSymbol:
+            if current in wallSymbols:
                 continue
             nodes[(i, j)] = []
             for direction in directions:
                 neighbourPoint = add((i, j), directions[direction])
                 neighbourSymbol = get(grid, neighbourPoint)
-                if not neighbourSymbol or neighbourSymbol == wallSymbol:
+                if not neighbourSymbol or neighbourSymbol in wallSymbols:
                     continue
                 if not adjFunc or adjFunc(current, neighbourSymbol, direction):
                     nodes[(i, j)].append(neighbourPoint)

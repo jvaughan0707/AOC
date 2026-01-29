@@ -33,6 +33,9 @@ class Cuboid:
     def __repr__(self):
         return f'{self.xRange}'
 
+    def __eq__(self, other):
+        return self.xRange == other.xRange and self.yRange == other.yRange and self.zRange == other.zRange
+
 for line in lines:
     state = line.startswith('on')
     xMin, xMax, yMin, yMax, zMin, zMax = getNumbers(line)
@@ -52,6 +55,18 @@ for line in lines:
 positive = []
 negative = []
 
+def addPositive(cuboid):
+    if cuboid in negative:
+        negative.remove(cuboid)
+    else:
+        positive.append(cuboid)
+
+def addNegative(cuboid):
+    if cuboid in positive:
+        positive.remove(cuboid)
+    else:
+        negative.append(cuboid)
+
 for instruction in instructions:
     state, xMin, xMax, yMin, yMax, zMin, zMax = instruction
     #
@@ -64,44 +79,35 @@ for instruction in instructions:
 
     new = Cuboid((xMin, xMax), (yMin, yMax), (zMin, zMax))
 
-    newPos = []
-    newNeg = []
+    currentPos = positive.copy()
+    currentNeg = negative.copy()
 
     if state:
-        for c in positive:
+        for c in currentPos:
             overlap = new.checkIntersection(c)
             if overlap:
-                newNeg.append(overlap)
-        for c in negative:
+                addNegative(overlap)
+        for c in currentNeg:
             overlap = new.checkIntersection(c)
             if overlap:
-                newPos.append(overlap)
-        newPos.append(new)
+                addPositive(overlap)
+        addPositive(new)
     else:
-        for c in negative:
+        for c in currentNeg:
             overlap = new.checkIntersection(c)
             if overlap:
-                newPos.append(overlap)
-        for c in positive:
+                addPositive(overlap)
+        for c in currentPos:
             overlap = new.checkIntersection(c)
             if overlap:
-                newNeg.append(overlap)
+                addNegative(overlap)
 
-    print(new, newPos, newNeg)
-    positive.extend(newPos)
-    negative.extend(newNeg)
+total = 0
+for c in positive:
+    total += c.getArea()
 
-    total = 0
-    for c in positive:
-        total += c.getArea()
+for c in negative:
+    total -= c.getArea()
 
-    for c in negative:
-        total -= c.getArea()
+print(total)
 
-    print(total)
-
-print(positive)
-print(negative)
-
-#[(10, 10)]
-#[(11, 11), (11, 11), (10, 10)]
