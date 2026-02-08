@@ -4,3 +4,4 @@
 *.js
 *.css
 /.idea
+/*/__pycache__/

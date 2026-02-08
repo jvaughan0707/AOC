@@ -1,4 +1,5 @@
 from copy import deepcopy
+from pathlib import Path
 
 def normalise(x):
     return 1 if x > 0 else 0 if x == 0 else -1
@@ -154,13 +155,21 @@ arrowDirections = {
     'v': down,
 }
 
-def getInput(day):
-    with open(f'inputs/{day}') as f:
-        return f.read().splitlines()
+def getRawInput(day, file = None) -> str:
+    inputFile = f'inputs/{day}'
 
+    if file:
+        callerDir = Path(file).resolve().parent
+        inputFile = callerDir / inputFile
 
-def getGridInput(day):
-    lines = getInput(day)
+    with open(inputFile) as f:
+        return f.read()
+
+def getInput(day, file = None):
+    return getRawInput(day, file).splitlines()
+
+def getGridInput(day, file = None):
+    lines = getInput(day, file)
 
     grid = []
     for line in lines:
@@ -168,16 +177,15 @@ def getGridInput(day):
 
     return grid
 
-def getNumbersGridInput(day):
-    grid = getGridInput(day)
+def getNumbersGridInput(day, file = None):
+    grid = getGridInput(day, file)
 
     return [list(map(int, row)) for row in grid]
 
-def getSectionsInput(day):
-    with open(f'inputs/{day}') as f:
-        sections = f.read().split('\n\n')
+def getSectionsInput(day, file = None):
+    sections = getRawInput(day, file).split('\n\n')
 
-        return list(map(lambda x: x.split('\n'), sections))
+    return list(map(lambda x: x.split('\n'), sections))
 
 def getFirstInGrid(grid, char):
     width = len(grid[0])
