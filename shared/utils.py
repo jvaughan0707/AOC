@@ -1,5 +1,6 @@
 from copy import deepcopy
 from pathlib import Path
+import math
 
 def normalise(x):
     return 1 if x > 0 else 0 if x == 0 else -1
@@ -119,6 +120,17 @@ def scale(p, s):
 def dot(p1, p2):
     return sum(p1[i] * p2[i] for i in range(len(p1)))
 
+def matrixMult(p, matrix):
+    return tuple([sum([a * b for (a,b) in zip(row, p)]) for row in matrix])
+
+# positive = anti-clockwise
+def rotate(p, degrees):
+    rads = math.radians(degrees)
+    matrix = [[math.cos(rads), -math.sin(rads)],
+              [math.sin(rads), math.cos(rads)]]
+    
+    return matrixMult(p, matrix)
+
 def isOob(grid, p):
     return not (0 <= p[0] < len(grid) and 0 <= p[1] < len(grid[0]))
 
@@ -154,6 +166,8 @@ arrowDirections = {
     '<': left,
     'v': down,
 }
+
+orderedDirections = [up, right, down, left]
 
 def getRawInput(day, file = None) -> str:
     inputFile = f'inputs/{day}'
@@ -424,7 +438,7 @@ class Point:
         self.neighbours[direction] = neighbour
 
     def __repr__(self):
-        return str(self.position)
+        return str(self.value)
 
 def getGridPoints(grid, diagonal = False):
     points = {}

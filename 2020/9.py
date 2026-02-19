@@ -2,8 +2,6 @@ from shared.utils import getInput
 
 lines = list(map(int, getInput(9, __file__)))
 
-print(lines)
-
 preLength = 25
 
 sums = [set() for _ in range(preLength)]
